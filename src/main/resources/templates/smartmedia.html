@@ -1,31 +1,134 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gestura - Smart Media</title>
-    <link rel="stylesheet" href="/css/styles.css"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestura - Android App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/styles.css" />
     <style>
-        .media-container {
-            max-width: 800px;
-            width: 90%;
-            margin: 1rem auto;
-            padding: 0 1rem;
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #ff4757;
+            --accent-color: #ff6b81;
+            --text-color: #2f3542;
+            --light-bg: #f1f2f6;
+            --dark-bg: #2f3542;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --hover-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            padding: 0;
+            margin: 0;
+        }
+
+        .custom-header {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 30px 40px 10px 40px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-center {
+            flex: 1;
+            margin-left: 30px;
+        }
+
+        .header-center h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .header-center .subtitle {
+            margin-top: 5px;
+            color: #555;
+            font-size: 1.1rem;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 30px;
             align-items: center;
         }
 
-        .video-container {
-            position: relative;
+        .header-right img {
+            height: 70px;
+            object-fit: contain;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+            margin-left: 20px;
+        }
+
+        .auth-button {
+            padding: 8px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .login-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .signup-btn {
+            background-color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            color: white;
+        }
+
+        .signup-btn:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .main-content {
+            padding: 60px 0;
             width: 100%;
-            max-width: 640px;
-            height: 0;
-            padding-bottom: 36%; /* 16:9 aspect ratio for max-width 640px */
-            margin: 0 auto 1.5rem;
-            background: #000;
-            border-radius: 8px;
+        }
+
+        .video-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 15px;
             overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+        }
+
+        .video-container .ratio {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
 
         .video-container iframe {
@@ -35,100 +138,189 @@
             width: 100%;
             height: 100%;
             border: none;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .download-section {
-            text-align: center;
-            margin: 1.5rem 0;
-            width: 100%;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            margin-top: -30px;
+            position: relative;
+            z-index: 1;
         }
 
-        .download-button {
-            display: inline-block;
-            width: 100%;
-            max-width: 300px;
-            padding: 0.75rem 1.5rem;
-            background-color: #E91E63; /* Pink/Magenta base color */
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--primary-color);
             color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
             text-decoration: none;
-            border-radius: 4px;
-            font-weight: bold;
+            font-size: 1.2rem;
+            font-weight: 600;
             transition: all 0.3s ease;
-            font-size: 0.9rem;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(233, 30, 99, 0.2);
+            border: none;
+            margin-top: 20px;
         }
 
-        .download-button:hover {
-            background-color: #C2185B; /* Darker pink/magenta on hover */
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(233, 30, 99, 0.3);
+        .download-btn:hover {
+            background-color: var(--secondary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--hover-shadow);
         }
 
-        .section-title {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            color: #333;
+        .download-btn i {
             font-size: 1.5rem;
         }
 
-        @media (max-width: 600px) {
-            .media-container {
-                width: 95%;
-                padding: 0 0.5rem;
-            }
-            
+        .app-features {
+            margin-top: 40px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .feature-item i {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 50px 0;
+            margin-top: 50px;
+        }
+
+        .footer-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: white;
+        }
+
+        @media (max-width: 768px) {
             .video-container {
-                padding-bottom: 56.25%; /* 16:9 aspect ratio for mobile */
+                max-width: 100%;
             }
             
-            .download-button {
-                max-width: 100%;
+            .download-section {
+                margin-top: 20px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Main Content -->
-    <div class="main-container">
-        <!-- Combined Navbar and Hero Section -->
-        <div class="hero-split-container">
-            <div class="nav-container">
-                <img src="/assets/gesturalogo.png" alt="Gestura Logo" class="logo" />
-                <div class="brand-text">
-                    <h1>Gestura</h1>
-                    <p class="subtext">Real-time Sign Language Interpreter and Training Utility</p>
-                </div>
-                <div class="spacer"></div>
-                <img src="/assets/swavlamban.png" alt="Swavlamban" class="nav-image" />
-                <img src="/assets/gnec.webp" alt="GNEC" class="nav-image" />
-            </div>
+    <!-- Custom Header -->
+    <div class="custom-header">
+        <div class="header-left">
+            <img src="/assets/gesturalogo.png" alt="Gestura Logo" style="height: 70px;">
         </div>
-
-        <!-- Media Player Content -->
-        <div class="media-container">
-            <h2 class="section-title">Demonstration Video</h2>
-            <div class="video-container">
-                <iframe 
-                    src="https://www.youtube.com/embed/wfzDYXifSP8" 
-                    title="Gestura Demo Video"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-                </iframe>
-            </div>
-            <div class="download-section">
-                <a href="https://github.com/abhishekkcrs/Gestura/tree/main/MediaPlayer_with_Gestura" class="download-button" download>
-                    Download SmartMedia
-                </a>
+        <div class="header-center">
+            <h1>Gestura</h1>
+            <div class="subtitle">Real-time Sign Language Interpreter and Training Utility</div>
+        </div>
+        <div class="header-right">
+            <img src="/assets/swavlamban.png" alt="Swavlamban Logo">
+            <img src="/assets/azadi.jpg" alt="Azadi Ka Amrit Mahotsav Logo">
+            <div class="auth-buttons">
+                <a href="/login" class="auth-button login-btn">Login</a>
+                <a href="/signup" class="auth-button signup-btn">Sign Up</a>
             </div>
         </div>
     </div>
 
+    <!-- Main Content -->
+    <section class="main-content">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10">
+                    <div class="video-container">
+                        <div class="ratio ratio-16x9">
+                            <iframe 
+                                src="https://www.youtube.com/embed/wfzDYXifSP8" 
+                                title="Gestura SmartMedia ToolKit" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-10 mt-4 mt-lg-0">
+                    <div class="download-section">
+                        <h2 class="mb-4">Download SmartMedia ToolKit</h2>
+                        <p class="mb-4">HandsFree Media Playback</p>
+                        
+                        <div class="app-features">
+                            <div class="feature-item">
+                                <i class="fas fa-mobile-alt"></i>
+                                <span>Control with Gesures</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-book"></i>
+                                <span>RealTime Sync</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-history"></i>
+                                <span>Custom KeyBindings</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-sync"></i>
+                                <span>Control other apps</span>
+                            </div>
+                        </div>
+
+                        <a href="https://github.com/abhishekkcrs/Gestura/tree/main/MediaPlayer_with_Gestura" class="download-btn">
+                            <i class="fab fa-android"></i>
+                            Download SmartMedia
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="footer">
-        <p>Gestura: Equal Voices, Different Languages</p>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>About Gestura</h5>
+                    <p>Empowering communication through technology and innovation.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/about" class="footer-link">About Us</a></li>
+                        <li><a href="/contact" class="footer-link">Contact</a></li>
+                        <li><a href="/privacy" class="footer-link">Privacy Policy</a></li>
+                        <li><a href="/terms" class="footer-link">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Connect With Us</h5>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="footer-link"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="footer-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="footer-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="footer-link"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
-</html> 
+</html>
