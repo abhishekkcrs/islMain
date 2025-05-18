@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 //
-//@FeignClient(name = "ISL-PAYMENTS", configuration = FeignClientConfig.class)
+@FeignClient(name = "ISL-PAYMENTS", configuration = FeignClientConfig.class)
 public interface PaymentClient {
 
     @GetMapping("/payment/fetchorders")
