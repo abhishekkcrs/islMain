@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Gestura</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/styles.css" />
+    <style>
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #ff4757;
+            --accent-color: #ff6b81;
+            --text-color: #2f3542;
+            --light-bg: #f1f2f6;
+            --dark-bg: #2f3542;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --hover-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .custom-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 30px 40px 10px 40px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-center {
+            flex: 1;
+            margin-left: 30px;
+        }
+
+        .header-center h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .header-center .subtitle {
+            margin-top: 5px;
+            color: #555;
+            font-size: 1.1rem;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .header-right img {
+            height: 70px;
+            object-fit: contain;
+        }
+
+        .login-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .login-card h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+            outline: none;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-login:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .social-login {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .social-login p {
+            color: #666;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .social-login p::before,
+        .social-login p::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background-color: #e0e0e0;
+        }
+
+        .social-login p::before {
+            left: 0;
+        }
+
+        .social-login p::after {
+            right: 0;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            background-color: #f8f9fa;
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .social-btn img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .error-alert {
+            background-color: #fff3f3;
+            color: var(--secondary-color);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ffcdd2;
+            display: none;
+        }
+
+        .success-alert {
+            background-color: #f1f8e9;
+            color: #2e7d32;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #c5e1a5;
+        }
+
+        .footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 30px 0;
+            margin-top: auto;
+        }
+
+        .footer p {
+            margin: 0;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .login-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Header -->
+    <div class="custom-header">
+        <div class="header-left">
+            <img src="/assets/gesturalogo.png" alt="Gestura Logo" style="height: 70px;">
+        </div>
+        <div class="header-center">
+            <h1>Gestura</h1>
+            <div class="subtitle">Real-time Sign Language Interpreter and Training Utility</div>
+        </div>
+        <div class="header-right">
+            <img src="/assets/swavlamban.png" alt="Swavlamban Logo">
+            <img src="/assets/azadi.jpg" alt="Azadi Ka Amrit Mahotsav Logo">
+        </div>
+    </div>
+
+    <!-- Login Container -->
+    <div class="login-container">
+        <div class="login-card">
+            <div th:if="${param.logout}" class="success-alert">
+                You have been logged out successfully!
+            </div>
+
+            <div id="error-alert" class="error-alert">
+                Invalid username or password. Please try again.
+            </div>
+
+            <h2>Welcome Back</h2>
+            <form th:action="@{/login}" method="post">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" class="form-control" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" required />
+                </div>
+
+                <button type="submit" class="btn-login">Login</button>
+            </form>
+
+            <div class="social-login">
+                <p>Or continue with</p>
+                <a href="/oauth2/authorization/google" class="social-btn">
+                    <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo" />
+                    Login with Google
+                </a>
+                <a href="/oauth2/authorization/github" class="social-btn">
+                    <img src="https://cdn2.iconfinder.com/data/icons/font-awesome/1792/github-512.png" alt="GitHub" />
+                    Login with GitHub
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Gestura. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('error') === 'true') {
+                document.getElementById('error-alert').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

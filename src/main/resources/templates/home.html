@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestura - Sign Language Solutions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/styles.css" />
+    <style>
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #ff4757;
+            --accent-color: #ff6b81;
+            --text-color: #2f3542;
+            --light-bg: #f1f2f6;
+            --dark-bg: #2f3542;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --hover-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            padding: 0;
+            margin: 0;
+        }
+
+        .custom-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 30px 40px 10px 40px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-center {
+            flex: 1;
+            margin-left: 30px;
+        }
+
+        .header-center h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .header-center .subtitle {
+            margin-top: 5px;
+            color: #555;
+            font-size: 1.1rem;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .header-right img {
+            height: 70px;
+            object-fit: contain;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+            margin-left: 20px;
+        }
+
+        .auth-button {
+            padding: 8px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .login-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .signup-btn {
+            background-color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            color: white;
+        }
+
+        .signup-btn:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            padding: 100px 0;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+
+        .feature-description {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .btn-feature {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            border: none;
+        }
+
+        .btn-feature:hover {
+            background-color: var(--secondary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        .footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 50px 0;
+            margin-top: 50px;
+        }
+
+        .footer-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: white;
+        }
+
+        .sdg-section {
+            background-color: white;
+            padding: 50px 0;
+            margin: 50px 0;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        .gestura-sdg-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: stretch;
+            gap: 30px;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .gestura-sdg-card {
+            text-align: center;
+            flex: 0 1 300px;
+            min-width: 250px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gestura-sdg-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary-color);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .gestura-sdg-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .gestura-sdg-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .gestura-sdg-card img {
+            width: 160px;
+            height: 160px;
+            object-fit: contain;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .gestura-sdg-card:hover img {
+            transform: scale(1.08);
+        }
+
+        .gestura-sdg-card h4 {
+            color: var(--primary-color);
+            margin-top: 15px;
+            font-weight: 600;
+            font-size: 1.3rem;
+            transition: color 0.3s ease;
+        }
+
+        .gestura-sdg-card:hover h4 {
+            color: var(--secondary-color);
+        }
+
+        .gestura-sdg-card p {
+            font-size: 0.95rem;
+            color: #666;
+            margin-top: 12px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .gestura-sdg-container {
+                gap: 20px;
+            }
+            
+            .gestura-sdg-card {
+                flex: 0 1 calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gestura-sdg-card {
+                flex: 0 1 100%;
+            }
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .btn-outline-light:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .video-section {
+            background-color: var(--light-bg);
+            padding: 60px 0;
+            width: 100%;
+        }
+
+        .video-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+        }
+
+        .video-container .ratio {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        @media (max-width: 1200px) {
+            .video-container {
+                max-width: 95%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .video-container {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Header -->
+    <div class="custom-header">
+        <div class="header-left">
+            <img src="/assets/gesturalogo.png" alt="Gestura Logo" style="height: 70px;">
+        </div>
+        <div class="header-center" onclick="goHome()">
+            <h1>Gestura</h1>
+            <div class="subtitle">Real-time Sign Language Interpreter and Training Utility</div>
+        </div>
+        <div class="header-right">
+            <img src="/assets/swavlamban.png" alt="Swavlamban Logo">
+            <img src="/assets/azadi.jpg" alt="Azadi Ka Amrit Mahotsav Logo">
+            <div class="auth-buttons">
+                <a href="/login" class="auth-button login-btn">Login</a>
+                <a href="/signup" class="auth-button signup-btn">Sign Up</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        function goHome() {
+            window.location.href = '/'; // replace with your homepage route if different
+        }
+    </script>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-3 mb-4">Welcome to GESTURA</h1>
+            <p class="lead mb-5">Revolutionizing Sign Language Communication with AI Technology</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="/learn" class="btn btn-light btn-lg">Start Learning</a>
+                <a href="/predictor" class="btn btn-outline-light btn-lg">Try Predictor</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Section -->
+    <section class="video-section py-5">
+        <div class="container">
+            <h2 class="section-title mb-4">Watch Gestura in Action</h2>
+            <div class="video-container">
+                <div class="ratio ratio-16x9">
+                    <iframe 
+                        src="https://www.youtube.com/embed/QMFFoaD76EE?start=3180" 
+                        title="Gestura Demo Video" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="container py-5">
+        <h2 class="section-title">Our Features</h2>
+        <div class="row">
+            <!-- Gestura-EDU -->
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <i class="fas fa-graduation-cap feature-icon"></i>
+                    <h3 class="feature-title">Gestura-EDU</h3>
+                    <p class="feature-description">Interactive learning platform for Indian Sign Language with real-time feedback and progress tracking.</p>
+                    <a href="/learn" class="btn-feature">Start Learning</a>
+                </div>
+            </div>
+
+            <!-- Smart MediaPlayer -->
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <i class="fas fa-play-circle feature-icon"></i>
+                    <h3 class="feature-title">Smart MediaPlayer</h3>
+                    <p class="feature-description">Control your media playback using sign language gestures. Download our desktop application.</p>
+                    <a href="/smartmedia" class="btn-feature">Download App</a>
+                </div>
+            </div>
+
+            <!-- Predictor -->
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <i class="fas fa-hand-paper feature-icon"></i>
+                    <h3 class="feature-title">Predictor</h3>
+                    <p class="feature-description">Real-time sign language detection and translation using advanced AI technology.</p>
+                    <a href="/predictor" class="btn-feature">Try Now</a>
+                </div>
+            </div>
+
+            <!-- Android App -->
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <i class="fab fa-android feature-icon"></i>
+                    <h3 class="feature-title">Android App</h3>
+                    <p class="feature-description">Take Gestura with you everywhere. Available on Google Play Store.</p>
+                    <a href="/android" class="btn-feature">Get App</a>
+                </div>
+            </div>
+
+            <!-- API Services -->
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <i class="fas fa-code feature-icon"></i>
+                    <h3 class="feature-title">API Services</h3>
+                    <p class="feature-description">Integrate sign language recognition into your applications with our powerful API.</p>
+                    <a href="/user/myapi" class="btn-feature">View API</a>
+                </div>
+            </div>
+
+            <!-- Payment & Orders -->
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <i class="fas fa-shopping-cart feature-icon"></i>
+                    <h3 class="feature-title">Payment & Orders</h3>
+                    <p class="feature-description">Secure payment gateway and order management for premium features.</p>
+                    <a href="/orders" class="btn-feature">View Orders</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SDG Section -->
+    <section class="sdg-data">
+        <div class="container">
+            <h2 class="section-title">Supporting Sustainable Development Goals</h2>
+            <div class="gestura-sdg-container">
+                <div class="gestura-sdg-card">
+                    <img src="/assets/sdg4.jpg" alt="SDG 4 - Quality Education">
+                    <h4>Quality Education</h4>
+                    <p>Ensuring inclusive and equitable quality education for all</p>
+                </div>
+                <div class="gestura-sdg-card">
+                    <img src="/assets/sdg5.png" alt="SDG 5 - Gender Equality">
+                    <h4>Gender Equality</h4>
+                    <p>Achieving gender equality and empowering all women and girls</p>
+                </div>
+                <div class="gestura-sdg-card">
+                    <img src="/assets/sdg10.png" alt="SDG 10 - Reduced Inequalities">
+                    <h4>Reduced Inequalities</h4>
+                    <p>Reducing inequality within and among countries</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>About Gestura</h5>
+                    <p>Empowering communication through technology and innovation.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/about" class="footer-link">About Us</a></li>
+                        <li><a href="/contact" class="footer-link">Contact</a></li>
+                        <li><a href="/privacy" class="footer-link">Privacy Policy</a></li>
+                        <li><a href="/terms" class="footer-link">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Connect With Us</h5>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="footer-link"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="footer-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="footer-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="footer-link"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/home.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sdgContainer = document.querySelector('.gestura-sdg-container');
+            const sdgCards = document.querySelectorAll('.gestura-sdg-card');
+
+            function adjustSDGLayout() {
+                const containerWidth = sdgContainer.offsetWidth;
+                const cardWidth = 300;
+                const gap = 30;
+
+                // Calculate items per row based on container width
+                const itemsPerRow = Math.floor((containerWidth + gap) / (cardWidth + gap));
+                
+                // Apply appropriate flex basis
+                sdgCards.forEach(card => {
+                    if (itemsPerRow === 1) {
+                        card.style.flexBasis = '100%';
+                    } else if (itemsPerRow === 2) {
+                        card.style.flexBasis = 'calc(50% - 15px)';
+                    } else {
+                        card.style.flexBasis = 'calc(33.333% - 20px)';
+                    }
+                });
+            }
+
+            // Initial layout adjustment
+            adjustSDGLayout();
+
+            // Adjust on window resize with debounce
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(adjustSDGLayout, 250);
+            });
+        });
+    </script>
+</body>
+</html>

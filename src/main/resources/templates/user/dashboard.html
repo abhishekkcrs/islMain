@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestura - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/styles.css" />
+    <style>
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #ff4757;
+            --accent-color: #ff6b81;
+            --text-color: #2f3542;
+            --light-bg: #f1f2f6;
+            --dark-bg: #2f3542;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --hover-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            padding: 0;
+            margin: 0;
+        }
+
+        .custom-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 30px 40px 10px 40px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-center {
+            flex: 1;
+            margin-left: 30px;
+        }
+
+        .header-center h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .header-center .subtitle {
+            margin-top: 5px;
+            color: #555;
+            font-size: 1.1rem;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .header-right img {
+            height: 70px;
+            object-fit: contain;
+        }
+
+        .dashboard-container {
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .welcome-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 40px;
+        }
+
+        .welcome-section h1 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .welcome-section p {
+            color: #666;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .card-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .dashboard-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text-color);
+            border: none;
+            text-align: left;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .dashboard-card h3 {
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .dashboard-card p {
+            color: #666;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 50px 0;
+            margin-top: 50px;
+        }
+
+        .footer-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 20px;
+            }
+
+            .card-section {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Header -->
+    <div class="custom-header">
+        <div class="header-left">
+            <img src="/assets/gesturalogo.png" alt="Gestura Logo" style="height: 70px;">
+        </div>
+        <div class="header-center">
+            <h1>Gestura</h1>
+            <div class="subtitle">Real-time Sign Language Interpreter and Training Utility</div>
+        </div>
+        <div class="header-right">
+            <img src="/assets/swavlamban.png" alt="Swavlamban Logo">
+            <img src="/assets/azadi.jpg" alt="Azadi Ka Amrit Mahotsav Logo">
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="dashboard-container">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h1>Welcome Back, <span th:text="${username}">User</span> 👋</h1>
+            <p>Your AI-driven platform for real-time gesture recognition, payments, and predictions.</p>
+        </div>
+
+        <!-- Card Section -->
+        <div class="card-section">
+            <!-- Profile Card -->
+            <button class="dashboard-card" onclick="redirectTo('/profile')">
+                <i class="fas fa-user-circle card-icon"></i>
+                <h3>Profile</h3>
+                <p>Manage your account details and preferences.</p>
+            </button>
+
+            <!-- Payments Card -->
+            <button class="dashboard-card" onclick="redirectTo('/user/fetchorders')">
+                <i class="fas fa-credit-card card-icon"></i>
+                <h3>Payments</h3>
+                <p>Manage your payment methods and history.</p>
+            </button>
+
+            <!-- Predictor Card -->
+            <button class="dashboard-card" onclick="redirectTo('/predictor')">
+                <i class="fas fa-chart-line card-icon"></i>
+                <h3>Predictor</h3>
+                <p>Gain insights on what everybody says.</p>
+            </button>
+
+            <!-- History Card -->
+            <button class="dashboard-card" onclick="redirectTo('/user/payment')">
+                <i class="fas fa-history card-icon"></i>
+                <h3>Paid API Services</h3>
+                <p>View your past activity and performance.</p>
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>About Gestura</h5>
+                    <p>Empowering communication through technology and innovation.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/about" class="footer-link">About Us</a></li>
+                        <li><a href="/contact" class="footer-link">Contact</a></li>
+                        <li><a href="/privacy" class="footer-link">Privacy Policy</a></li>
+                        <li><a href="/terms" class="footer-link">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Connect With Us</h5>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="footer-link"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="footer-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="footer-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="footer-link"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function redirectTo(path) {
+            window.location.href = path;
+        }
+    </script>
+</body>
+</html>
