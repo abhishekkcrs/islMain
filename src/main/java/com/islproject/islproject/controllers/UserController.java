@@ -4,7 +4,7 @@ import com.islproject.islproject.Helper.CookieJwtGenerator;
 import com.islproject.islproject.Helper.GetUserName;
 import com.islproject.islproject.entities.Payment;
 import com.islproject.islproject.entities.User;
-import com.islproject.islproject.services.PaymentClient;
+//import com.islproject.islproject.services.PaymentClient;
 import com.islproject.islproject.services.UserServicesImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,9 +22,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-
-    @Autowired
-    PaymentClient paymentClient;
+//
+//    @Autowired
+//    PaymentClient paymentClient;
 
     @Autowired
     UserServicesImpl userServices;
@@ -60,28 +60,28 @@ public class UserController {
             return "redirect:/checkout";
     }
 
-    @GetMapping("/fetchorders")
-    private String getOrders(HttpServletResponse response,Model model   ){
-        response.addCookie(cookieJwtGenerator.generateCookie());
-        List<Payment> allPayments=paymentClient.getPayments();
-        if (allPayments != null) {
-            allPayments.forEach(payment -> logger.info("Payment ID: {}, Amount: {}, Status: {}",
-                    payment.getId(), payment.getAmount(), payment.getPaymentStatus()));
-        } else {
-            logger.warn("No payments received from Payment Microservice");
-        }
-
-        allPayments = allPayments.stream().map(payment -> {
-            //payment.setUsername(payment.getUsername() != null ? payment.getUsername() : "N/A");
-            payment.setOrderId(payment.getOrderId() != null ? payment.getOrderId() : "N/A");
-            payment.setCurrency(payment.getCurrency() != null ? payment.getCurrency() : "N/A");
-            payment.setPaymentStatus(payment.getPaymentStatus() != null ? payment.getPaymentStatus() : "PENDING");
-            payment.setTransactionId(payment.getTransactionId() != null ? payment.getTransactionId() : "N/A");
-            return payment;
-        }).toList();
-
-        model.addAttribute("payments", allPayments);
-        return "user/orders";
-    }
+//    @GetMapping("/fetchorders")
+//    private String getOrders(HttpServletResponse response,Model model   ){
+//        response.addCookie(cookieJwtGenerator.generateCookie());
+//        List<Payment> allPayments=paymentClient.getPayments();
+//        if (allPayments != null) {
+//            allPayments.forEach(payment -> logger.info("Payment ID: {}, Amount: {}, Status: {}",
+//                    payment.getId(), payment.getAmount(), payment.getPaymentStatus()));
+//        } else {
+//            logger.warn("No payments received from Payment Microservice");
+//        }
+//
+//        allPayments = allPayments.stream().map(payment -> {
+//            //payment.setUsername(payment.getUsername() != null ? payment.getUsername() : "N/A");
+//            payment.setOrderId(payment.getOrderId() != null ? payment.getOrderId() : "N/A");
+//            payment.setCurrency(payment.getCurrency() != null ? payment.getCurrency() : "N/A");
+//            payment.setPaymentStatus(payment.getPaymentStatus() != null ? payment.getPaymentStatus() : "PENDING");
+//            payment.setTransactionId(payment.getTransactionId() != null ? payment.getTransactionId() : "N/A");
+//            return payment;
+//        }).toList();
+//
+//        model.addAttribute("payments", allPayments);
+//        return "user/orders";
+//    }
 
 }

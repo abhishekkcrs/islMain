@@ -19,8 +19,8 @@ public class UserServicesImpl implements UserServices{
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    PaymentClient paymentClient;
+//    @Autowired
+//    PaymentClient paymentClient;
 
     @Autowired
     GetUserName getUserName;
