@@ -1,31 +1,36 @@
 # ---------- Build Stage ----------
 FROM bellsoft/liberica-openjdk-debian:23 as builder
 
+# Set working directory inside the container
 WORKDIR /app
 
-# Copy Maven wrapper and build files
+# Copy Maven wrapper and POM files first for layer caching
 COPY mvnw pom.xml ./
 COPY .mvn .mvn
 
-# Download dependencies for caching
-RUN chmod +x mvnw && ./mvnw dependency:go-offline
+# Ensure mvnw is executable (important on Windows)
+RUN chmod +x mvnw
 
-# Copy the rest of the code
+# Download dependencies (improves Docker layer caching)
+RUN ./mvnw dependency:go-offline
+
+# Now copy the rest of the application code
 COPY src ./src
 
-# Build the app (skip tests for speed)
+# Package the Spring Boot application (skip tests to speed up)
 RUN ./mvnw clean package -DskipTests
 
 # ---------- Runtime Stage ----------
 FROM bellsoft/liberica-openjdk-debian:23
 
+# Set working directory
 WORKDIR /app
 
-# Copy the built JAR from builder
+# Copy only the final jar from builder image
 COPY --from=builder /app/target/*.jar app.jar
 
-# Expose the port (Spring Boot default)
+# Expose the Spring Boot default port
 EXPOSE 8080
 
-# Run the app
+# Set entrypoint
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
