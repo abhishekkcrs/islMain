@@ -1,31 +1,31 @@
-# -------- Build stage --------
-FROM eclipse-temurin:23-jdk-jammy AS builder
+# ---------- Build Stage ----------
+FROM bellsoft/liberica-openjdk-debian:23 as builder
 
-# Set working directory
 WORKDIR /app
 
-# Copy Maven wrapper and project files
-COPY .mvn .mvn
+# Copy Maven wrapper and build files
 COPY mvnw pom.xml ./
+COPY .mvn .mvn
+
+# Download dependencies for caching
+RUN chmod +x mvnw && ./mvnw dependency:go-offline
+
+# Copy the rest of the code
 COPY src ./src
 
-# Give executable permission to mvnw if needed (Linux/Mac)
-RUN chmod +x mvnw
-
-# Build the application (skip tests to speed up)
+# Build the app (skip tests for speed)
 RUN ./mvnw clean package -DskipTests
 
-# -------- Runtime stage --------
-FROM eclipse-temurin:23-jre-jammy
+# ---------- Runtime Stage ----------
+FROM bellsoft/liberica-openjdk-debian:23
 
-# Set working directory
 WORKDIR /app
 
-# Copy the built jar from builder stage
+# Copy the built JAR from builder
 COPY --from=builder /app/target/*.jar app.jar
 
-# Expose port 8080 (Spring Boot default)
+# Expose the port (Spring Boot default)
 EXPOSE 8080
 
-# Run the application
+# Run the app
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
